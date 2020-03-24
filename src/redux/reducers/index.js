@@ -7,6 +7,7 @@ const initialState = {
 
 function rootReducer(state = initialState, action) {
   if(action.type === FETCH_CONTACTS) {
+    state.contacts = [];
     return Object.assign({}, state, {
       contacts: state.contacts.concat(action.payload)
     });

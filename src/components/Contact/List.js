@@ -18,10 +18,13 @@ export class ContactList extends Component {
     this.state = {
       id: '',
       nama : '',
-      no_telp: ''  
+      no_telp: '',
+      alamat: '',
+      search: ''
     }
     this.namaInput = this.namaInput.bind(this);
     this.no_telpInput = this.no_telpInput.bind(this);
+    this.alamatInput = this.alamatInput.bind(this);
   }
 
   /**
@@ -33,21 +36,44 @@ export class ContactList extends Component {
   no_telpInput(value) {
     this.setState({ no_telp : value });
   }
+  alamatInput(value) {
+    this.setState({ alamat : value });
+  }
+  searchInput(value) {
+    this.setState({ search: value });
+  }
 
+  /**
+   * After page loaded
+   */
   componentDidMount() {
     this.props.fetchContacts(); 
   }
 
+  /**
+   * Display Data on form
+   */
   toEdit(to_be_edited) {
     this.setState({ 
       id : to_be_edited.id,
       nama : to_be_edited.nama,
-      no_telp: to_be_edited.no_telp
+      no_telp: to_be_edited.no_telp,
+      alamat : to_be_edited.alamat
     });
   }
 
+  /**
+   * Update Data
+   */
   update() {  
     this.props.updateContacts(this.state);
+  }
+
+  /**
+   * Search Data
+   */
+  search() {
+    this.props.fetchContacts(this.state.search);
   }
 
   render() {
@@ -57,7 +83,16 @@ export class ContactList extends Component {
         <hr/>
         <div className="row">
           <div className="col-lg-6 col-md-6 col-sm-12 col-12">
-            <table className="table table-sm table-bordered">
+            <div className="row mb-3">
+              <div className="col-lg-8 col-md-6 col-sm-12 col-12">
+                <Form.Control type="text" placeholder="Search By Name"
+                onChange={e => this.searchInput(e.target.value)}></Form.Control>
+              </div>
+              <div className="col-lg-3 col-md-3 col-sm-12 col-12">
+                <Button variant="info" onClick={() => this.search()}> Cari </Button>
+              </div>
+            </div>
+            <table className="table table-sm table-bordered table-striped">
               <thead>
                 <tr>
                   <th> Nama </th>
@@ -88,6 +123,10 @@ export class ContactList extends Component {
               <Form.Label> Nomor Telepon </Form.Label>
               <Form.Control type="text" className="formControl" value={this.state.no_telp ? this.state.no_telp : ''}
               onChange={e => this.no_telpInput(e.target.value)}/>
+            </Form.Group>
+            <Form.Group>
+              <Form.Label> Alamat </Form.Label>
+              <textarea className="form-control" value={this.state.alamat ? this.state.alamat : ''} onChange={e => this.alamatInput(e.target.value)}></textarea>
             </Form.Group>
             <Button variant="primary" onClick={() => this.update()}> Update Data </Button>
           </div>
