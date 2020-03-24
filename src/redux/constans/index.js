@@ -1,0 +1,2 @@
+export const FETCH_CONTACTS = "FETCH_CONTACTS";
+export const UPDATE_CONTACTS = "UPDATE_CONTACTS";
